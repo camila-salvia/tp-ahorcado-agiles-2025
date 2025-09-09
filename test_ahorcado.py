@@ -12,3 +12,8 @@ def test_validar_letra_falla():
 # test 3: la letra vale, así sea mayúscula o minúscula
 def test_validar_mayusc_minusc():
 	assert letra_pertenece_palabra("a", palabra_secreta) is True
+  assert letra_pertenece_palabra("A", palabra_secreta) is True
+
+# test 4: ingreso de caracter inválido
+def test_validar_caracter_invalido():
+	assert letra_pertenece_palabra("#", palabra_secreta) is False
