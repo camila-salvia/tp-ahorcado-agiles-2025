@@ -8,3 +8,7 @@ def test_validar_letra_acierto():
 #test 2: valida letra y falla
 def test_validar_letra_falla():
   assert letra_pertenece_palabra("z", palabra_secreta) is False
+
+# test 3: la letra vale, así sea mayúscula o minúscula
+def test_validar_mayusc_minusc():
+	assert letra_pertenece_palabra("a", palabra_secreta) is True
