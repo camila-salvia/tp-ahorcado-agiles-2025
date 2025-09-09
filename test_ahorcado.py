@@ -7,4 +7,4 @@ def test_validar_letra_acierto():
 
 #test 2: valida letra y falla
 def test_validar_letra_falla():
-  assert letra_pertenece_palabra("z", palabra_secreta)
+  assert letra_pertenece_palabra("z", palabra_secreta) is False
