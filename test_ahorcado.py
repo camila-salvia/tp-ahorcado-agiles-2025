@@ -1,3 +1,4 @@
+import pytest
 from ahorcado import letra_pertenece_palabra, palabra_secreta
 
 # test 1: valida letra y acierta
