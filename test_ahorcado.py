@@ -1,11 +1,8 @@
 import pytest
-<<<<<<< HEAD
-from ahorcado import letra_pertenece_palabra, palabra_secreta
-=======
 from ahorcado import palabra_secreta, letra_pertenece_palabra, ingresa_una_letra
 
+
 #FUNCIÓN: letra_pertenece_palabra
->>>>>>> e14f97a7e6abfa2dc4c68e131771af708efa503b
 
 # test 1: valida letra y acierta
 def test_validar_letra_acierto():
@@ -31,3 +28,8 @@ def test_validar_caracter_invalido():
 def test_ingresa_letra_aun_no_dicha():
   usadas = {"c", "a"} #letras ya usadas
   assert ingresa_una_letra("p", usadas) is True #p no está en usadas
+
+# test 6: ingresa una letra que ya fue dicha
+def test_ingresa_letra_dicha():
+  usadas = {"c", "a"} #letras ya usadas
+  assert ingresa_una_letra("c", usadas) is False #c está en usadas
