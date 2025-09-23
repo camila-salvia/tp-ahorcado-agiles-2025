@@ -38,10 +38,14 @@ def test_ingresa_letra_dicha():
 # FUNCIÓN: adivina_palabra
 
 # test 7: arriesga la palabra y gana el juego
-def test_adivina_palabra_gana():
-   assert adivinar("pera", palabra_secreta) is True
+def test_arriesga_palabra_gana():
+   assert arriesgar("pera", palabra_secreta) is True
 
 # test 8: arriesga la palabra, y pierde el juego
-def test_adivina_palabra_pierde():
-   assert adivinar("manzana", palabra_secreta) is False
-   
+def test_arriesga_palabra_pierde():
+   assert arriesgar("manzana", palabra_secreta) is False
+
+# test 9: gana por adivinar todas las letras
+def test_adivina_palabra():
+  usadas = {"e","r","a"} #letras ya usadas
+  assert adivinar_palabra(palabra_secreta, usadas) is True
