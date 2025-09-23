@@ -1,5 +1,5 @@
 import pytest
-from ahorcado import palabra_secreta, letra_pertenece_palabra, ingresa_una_letra, arriesgar, adivinar_palabra
+from ahorcado import palabra_secreta, letra_pertenece_palabra, verificar_disponibilidad, arriesgar, adivinar_palabra, restar_vida, vidas
 
 
 #FUNCIÓN: letra_pertenece_palabra
@@ -22,17 +22,17 @@ def test_validar_caracter_invalido():
 	assert letra_pertenece_palabra("#", palabra_secreta) is False
 
 
-# FUNCIÓN: ingresa_una_letra
+# FUNCIÓN: verificar_disponibilidad
 
 # test 5: ingresa una letra que se encuentra disponible
 def test_ingresa_letra_aun_no_dicha():
   usadas = {"c", "a"} #letras ya usadas
-  assert ingresa_una_letra("p", usadas) is True #p no está en usadas
+  assert verificar_disponibilidad("p", usadas) is True #p no está en usadas
 
 # test 6: ingresa una letra que ya fue dicha
 def test_ingresa_letra_dicha():
   usadas = {"c", "a"} #letras ya usadas
-  assert ingresa_una_letra("c", usadas) is False #c está en usadas
+  assert verificar_disponibilidad("c", usadas) is False #c está en usadas
 
 #-------------------------------
 # FUNCIÓN: arriesgar
@@ -55,3 +55,9 @@ def test_validar_palabra_mayusc_minusc():
 def test_adivina_palabra():
   usadas = {"p", "e","r","a"} #letras ya usadas
   assert adivinar_palabra(usadas, palabra_secreta) is True
+
+#-------------------------------
+# FUNCIÓN: restar_vida
+# test 11: quitar vida por letra incorrecta
+def test_restar_vida_por_letra_incorrecta():
+  assert restar_vida(6) == 5
