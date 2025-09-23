@@ -1,5 +1,5 @@
 import pytest
-from ahorcado import palabra_secreta, letra_pertenece_palabra, ingresa_una_letra
+from ahorcado import palabra_secreta, letra_pertenece_palabra, ingresa_una_letra, adivinar
 
 
 #FUNCIÓN: letra_pertenece_palabra
@@ -33,3 +33,11 @@ def test_ingresa_letra_aun_no_dicha():
 def test_ingresa_letra_dicha():
   usadas = {"c", "a"} #letras ya usadas
   assert ingresa_una_letra("c", usadas) is False #c está en usadas
+
+# FUNCIÓN: adivina_palabra
+
+# test 7: adivina la palabra y gana el juego
+def test_adivina_palabra_gana():
+   assert adivinar("pera", palabra_secreta) is True
+
+# test 8: arriesga la palabra, y gana el juego
