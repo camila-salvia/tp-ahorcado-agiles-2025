@@ -7,15 +7,13 @@ def letra_pertenece_palabra(letra: str, palabra_secreta: str) -> bool:
     letra = letra.lower() # test 3
     return letra in palabra_secreta 
 
-def ingresa_una_letra(letra: str, letras_usadas: set) -> bool:
-    if letra in letras_usadas:
+def ingresa_una_letra(letra: str, usadas: set) -> bool:
+    if letra in usadas:
         return False
     return True
 
-def adivinar_palabra(palabra_secreta: str, letras_usadas: set) -> bool:
-    for letra in usadas:
-        if letra in palabra_secreta:
-            return True
+def adivinar_palabra(palabra_secreta: str, usadas: set) -> bool:
+    return set(palabra_secreta).issubset(usadas) # test 9
         
 
 def arriesgar(palabra: str, palabra_secreta: str) -> bool:

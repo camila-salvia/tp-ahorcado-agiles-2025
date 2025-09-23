@@ -1,5 +1,5 @@
 import pytest
-from ahorcado import palabra_secreta, letra_pertenece_palabra, ingresa_una_letra, adivinar
+from ahorcado import palabra_secreta, letra_pertenece_palabra, ingresa_una_letra, arriesgar, adivinar_palabra
 
 
 #FUNCIÓN: letra_pertenece_palabra
@@ -47,5 +47,5 @@ def test_arriesga_palabra_pierde():
 
 # test 9: gana por adivinar todas las letras
 def test_adivina_palabra():
-  usadas = {"e","r","a"} #letras ya usadas
-  assert adivinar_palabra(palabra_secreta, usadas) is True
+  usadas = {"p", "e","r","a"} #letras ya usadas
+  assert adivinar_palabra(usadas, palabra_secreta) is True
