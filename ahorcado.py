@@ -14,3 +14,4 @@ def ingresa_una_letra(letra: str, letras_usadas: set) -> bool:
 def adivinar(palabra: str, palabra_secreta: str) -> bool:
     if palabra == palabra_secreta: # test 7
         return True
+    return False # test 8

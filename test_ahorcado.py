@@ -34,10 +34,14 @@ def test_ingresa_letra_dicha():
   usadas = {"c", "a"} #letras ya usadas
   assert ingresa_una_letra("c", usadas) is False #c está en usadas
 
+
 # FUNCIÓN: adivina_palabra
 
-# test 7: adivina la palabra y gana el juego
+# test 7: arriesga la palabra y gana el juego
 def test_adivina_palabra_gana():
    assert adivinar("pera", palabra_secreta) is True
 
-# test 8: arriesga la palabra, y gana el juego
+# test 8: arriesga la palabra, y pierde el juego
+def test_adivina_palabra_pierde():
+   assert adivinar("manzana", palabra_secreta) is False
+   
