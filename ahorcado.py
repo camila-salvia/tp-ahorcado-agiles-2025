@@ -17,6 +17,6 @@ def adivinar_palabra(palabra_secreta: str, usadas: set) -> bool:
         
 
 def arriesgar(palabra: str, palabra_secreta: str) -> bool:
-    if palabra == palabra_secreta: # test 7
+    if palabra.lower() == palabra_secreta: # test 7 y 10
         return True
     return False # test 8

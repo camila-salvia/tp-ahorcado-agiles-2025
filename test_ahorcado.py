@@ -13,7 +13,7 @@ def test_validar_letra_falla():
   assert letra_pertenece_palabra("z", palabra_secreta) is False
 
 # test 3: la letra vale, así sea mayúscula o minúscula
-def test_validar_mayusc_minusc():
+def test_validar_letra_mayusc_minusc():
     assert letra_pertenece_palabra("a", palabra_secreta) is True
     assert letra_pertenece_palabra("A", palabra_secreta) is True
 
@@ -34,9 +34,8 @@ def test_ingresa_letra_dicha():
   usadas = {"c", "a"} #letras ya usadas
   assert ingresa_una_letra("c", usadas) is False #c está en usadas
 
-
-# FUNCIÓN: adivina_palabra
-
+#-------------------------------
+# FUNCIÓN: arriesgar
 # test 7: arriesga la palabra y gana el juego
 def test_arriesga_palabra_gana():
    assert arriesgar("pera", palabra_secreta) is True
@@ -45,6 +44,13 @@ def test_arriesga_palabra_gana():
 def test_arriesga_palabra_pierde():
    assert arriesgar("manzana", palabra_secreta) is False
 
+# test 10: la palabra vale, sin importar mayúsculas o minúsculas
+def test_validar_palabra_mayusc_minusc():
+    assert arriesgar("pera", palabra_secreta) is True
+    assert arriesgar("PERA", palabra_secreta) is True
+
+#-------------------------------
+# FUNCIÓN: adivinar_palabra
 # test 9: gana por adivinar todas las letras
 def test_adivina_palabra():
   usadas = {"p", "e","r","a"} #letras ya usadas
