@@ -41,6 +41,7 @@ def adivinar_palabra(usadas: list, palabra_secreta: str) -> bool:
         
 
 def arriesgar(palabra: str, palabra_secreta: str) -> bool:
-    if palabra.lower() == palabra_secreta.lower(): # test 7 y 10
-        return True
-    return False # test 8
+    if not palabra.lower() == palabra_secreta.lower(): # test 8 y 10
+        vidas = 0
+        return False
+    return True # test 7 -> gana el juego si acierta la palabra
