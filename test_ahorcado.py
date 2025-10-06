@@ -1,5 +1,5 @@
 import pytest
-from ahorcado import palabra_secreta, letra_pertenece_palabra, verificar_disponibilidad, arriesgar, adivinar_palabra, restar_vida, vidas
+from ahorcado import palabra_secreta, letra_pertenece_palabra, verificar_disponibilidad, arriesgar, adivinar_palabra, restar_vida, vidas, usadas
 
 
 #FUNCIÓN: letra_pertenece_palabra
@@ -14,7 +14,9 @@ def test_validar_letra_falla():
 
 # test 3: la letra vale, así sea mayúscula o minúscula
 def test_validar_letra_mayusc_minusc():
+    usadas.clear()
     assert letra_pertenece_palabra("a", palabra_secreta) is True
+    usadas.clear()
     assert letra_pertenece_palabra("A", palabra_secreta) is True
 
 # test 4: ingreso de caracter inválido
@@ -61,3 +63,7 @@ def test_adivina_palabra():
 # test 11: quitar vida por letra incorrecta
 def test_restar_vida_por_letra_incorrecta():
   assert restar_vida(6) == 5
+
+# test 12: derrota si llega a 0 vidas
+def test_derrota_llega_a_cero_vidas():
+  assert restar_vida(1) == 0
