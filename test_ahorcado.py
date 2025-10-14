@@ -1,31 +1,26 @@
 import pytest
-from ahorcado import palabra_secreta, letra_pertenece_palabra, verificar_disponibilidad, arriesgar, adivinar_palabra, restar_vida, vidas, usadas
+from ahorcado import (
+   entrada_valida,
+   verificar_disponibilidad,
+   restar_vida,
+   adivinar_palabra,
+   arriesgar,
+   procesar_letra
+)
 
+palabra_secreta = "pera"
 
-#FUNCIÓN: letra_pertenece_palabra
-
-# test 1: valida letra y acierta
-def test_validar_letra_acierto():
-  assert letra_pertenece_palabra("a", palabra_secreta) is True
-
-#test 2: valida letra y falla
-def test_validar_letra_falla():
-  assert letra_pertenece_palabra("z", palabra_secreta) is False
-
-# test 3: la letra vale, así sea mayúscula o minúscula
-def test_validar_letra_mayusc_minusc():
-    usadas.clear()
-    assert letra_pertenece_palabra("a", palabra_secreta) is True
-    usadas.clear()
-    assert letra_pertenece_palabra("A", palabra_secreta) is True
-
+#FUNCION: entrada_valida
 # test 4: ingreso de caracter inválido
 def test_validar_caracter_invalido():
-	assert letra_pertenece_palabra("#", palabra_secreta) is False
+	assert entrada_valida("#") is False
+   
+# test 4: ingreso caracter valido
+def test_validar_caracter_valido():
+  assert entrada_valida("a") is True
 
 
 # FUNCIÓN: verificar_disponibilidad
-
 # test 5: ingresa una letra que se encuentra disponible
 def test_ingresa_letra_aun_no_dicha():
   usadas = {"c", "a"} #letras ya usadas
@@ -35,6 +30,7 @@ def test_ingresa_letra_aun_no_dicha():
 def test_ingresa_letra_dicha():
   usadas = {"c", "a"} #letras ya usadas
   assert verificar_disponibilidad("c", usadas) is False #c está en usadas
+
 
 #-------------------------------
 # FUNCIÓN: arriesgar
@@ -46,10 +42,10 @@ def test_arriesga_palabra_gana():
 def test_arriesga_palabra_pierde():
    assert arriesgar("manzana", palabra_secreta) is False
 
-# test 10: la palabra vale, sin importar mayúsculas o minúsculas
-def test_validar_palabra_mayusc_minusc():
-    assert arriesgar("pera", palabra_secreta) is True
+# test 10: la palabra vale, aunque sea mayúsculas
+def test_validar_palabra_mayusc():
     assert arriesgar("PERA", palabra_secreta) is True
+
 
 #-------------------------------
 # FUNCIÓN: adivinar_palabra
@@ -67,3 +63,28 @@ def test_restar_vida_por_letra_incorrecta():
 # test 12: derrota si llega a 0 vidas
 def test_derrota_llega_a_cero_vidas():
   assert restar_vida(1) == 0
+  assert restar_vida(0) == 0 #no puede ser negativo
+
+
+#FUNCIÓN: procesar_letra
+# test 1: valida letra y acierta
+def test_validar_letra_acierto():
+  vidas, usadas, acierto = procesar_letra("p", palabra_secreta, 6, [])
+  assert vidas == 6
+  assert "p" in usadas
+  assert acierto is True
+
+#test 2: valida letra y falla
+def test_validar_letra_falla():
+  vidas, usadas, acierto = procesar_letra("z", palabra_secreta, 6, [])
+  assert vidas == 5
+  assert "z" in usadas
+  assert acierto is False
+
+# test 3: la letra vale, así sea mayúscula o minúscula
+def test_validar_letra_mayusc_minusc():
+   vidas, usadas, acierto = procesar_letra("A", palabra_secreta, 4, ["p", "e"])
+   assert vidas == 4
+   assert "a" in usadas
+   assert acierto is True
+   
