@@ -35,13 +35,12 @@ def arriesgar(palabra: str, palabra_secreta: str) -> bool:
 def procesar_letra(letra: str, palabra_secreta: str, vidas: int, usadas: list) -> tuple[int, list, bool]:
     
     letra = letra.lower() 
+    nuevas_usadas = usadas + [letra]
 
     if letra in palabra_secreta:
-        nuevas_usadas = usadas + [letra]
         return (vidas, nuevas_usadas, True) # Acierto
     else:
         nuevas_vidas = restar_vida(vidas)
-        nuevas_usadas = usadas + [letra]
         return (nuevas_vidas, nuevas_usadas, False) # Error
 
 
