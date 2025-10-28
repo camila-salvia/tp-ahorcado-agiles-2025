@@ -12,12 +12,36 @@
   <h1>🎯 Juego del Ahorcado</h1>
   <div id="game-container">
     <div id="palabra">_ _ _ _</div>
-    <p>Vidas: <span id="vidas">6</span> ❤️</p>
+
+    <!-- Hangman SVG: se van mostrando partes según errores -->
+    <div id="hangman-container" aria-hidden="true">
+      <svg width="160" height="220" viewBox="0 0 160 220">
+        <!-- Gallows -->
+        <line x1="20" y1="200" x2="140" y2="200" stroke="#333" stroke-width="4"/>
+        <line x1="40" y1="200" x2="40" y2="20" stroke="#333" stroke-width="4"/>
+        <line x1="40" y1="20" x2="100" y2="20" stroke="#333" stroke-width="4"/>
+        <line x1="100" y1="20" x2="100" y2="40" stroke="#333" stroke-width="4"/>
+
+        <!-- Parts: cabeza, cuerpo, brazo izquierdo, brazo derecho, pierna izquierda, pierna derecha -->
+        <circle id="part-head" cx="100" cy="58" r="14" stroke="#222" stroke-width="3" fill="transparent" visibility="hidden"/>
+        <line id="part-body" x1="100" y1="72" x2="100" y2="120" stroke="#222" stroke-width="3" visibility="hidden"/>
+        <line id="part-arm-left" x1="100" y1="82" x2="80" y2="100" stroke="#222" stroke-width="3" visibility="hidden"/>
+        <line id="part-arm-right" x1="100" y1="82" x2="120" y2="100" stroke="#222" stroke-width="3" visibility="hidden"/>
+        <line id="part-leg-left" x1="100" y1="120" x2="85" y2="150" stroke="#222" stroke-width="3" visibility="hidden"/>
+        <line id="part-leg-right" x1="100" y1="120" x2="115" y2="150" stroke="#222" stroke-width="3" visibility="hidden"/>
+      </svg>
+    </div>
+
+    <p>Vidas: <span id="vidas">6</span></p>
     <p>Letras usadas: <span id="usadas">Ninguna</span></p>
 
     <div id="input-container">
       <input type="text" id="letra" maxlength="1" placeholder="Letra" />
-      <button id="btn-probar">Probar</button>
+      <button id="btn-probar">Probar letra</button>
+
+      <!-- Nuevo: intentar arriesgar toda la palabra -->
+      <input type="text" id="arriesgar-palabra" placeholder="Adivinar palabra" />
+      <button id="btn-arriesgar">Arriesgar</button>
     </div>
 
     <p id="mensaje"></p>
@@ -28,12 +52,26 @@
     let vidas = 6;
     let usadas = [];
 
-    const mostrarPalabra = () => {
-      let mostrada = "";
-      for (const l of palabraSecreta) {
-        mostrada += usadas.includes(l) ? l + " " : "_ ";
-      }
-      document.getElementById("palabra").textContent = mostrada.trim();
+    const partes = [
+      document.getElementById("part-head"),
+      document.getElementById("part-body"),
+      document.getElementById("part-arm-left"),
+      document.getElementById("part-arm-right"),
+      document.getElementById("part-leg-left"),
+      document.getElementById("part-leg-right"),
+    ];
+
+    const mostrarPartes = () => {
+      const errores = 6 - vidas;
+      partes.forEach((p, i) => {
+        p.style.visibility = i < errores ? "visible" : "hidden";
+      });
+    };
+
+    const mostrarPalabra = (palabra_mostrada) => {
+      // palabra_mostrada ya viene con espacios (ej: "_ e _ a ")
+      document.getElementById("palabra").textContent = (palabra_mostrada || "")
+        .trim();
     };
 
     const actualizarUsadas = () => {
@@ -41,61 +79,151 @@
         usadas.length > 0 ? usadas.join(", ") : "Ninguna";
     };
 
+    const setMensaje = (txt, cls = "") => {
+      const el = document.getElementById("mensaje");
+      el.textContent = txt;
+      el.className = cls;
+    };
+
+    const bloquearInputs = (bloquear) => {
+      document.getElementById("letra").disabled = bloquear;
+      document.getElementById("btn-probar").disabled = bloquear;
+      document.getElementById("arriesgar-palabra").disabled = bloquear;
+      document.getElementById("btn-arriesgar").disabled = bloquear;
+    };
+
+    const comprobarFin = (resp) => {
+      if (resp && resp.juego_terminado) {
+        // mostrar mensaje final que viene del servidor
+        setMensaje(resp.final_message || resp.mensaje || "", resp.juego_terminado && resp.vidas > 0 ? "win" : "lose");
+        bloquearInputs(true);
+        // esperar y arrancar nueva partida con palabra distinta
+        setTimeout(() => iniciarNuevaPartida(true), 1500);
+        return true;
+      }
+      return false;
+    };
+
+    const pedirGestion = (payload) => {
+      return fetch("/gestionar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(r => r.json());
+    };
+
     document.getElementById("btn-probar").addEventListener("click", () => {
       const letraInput = document.getElementById("letra");
-      const mensaje = document.getElementById("mensaje");
-      const letra = letraInput.value.toLowerCase();
+      const letra = letraInput.value.trim().toLowerCase();
       letraInput.value = "";
 
       if (!letra.match(/^[a-zñ]$/)) {
-        mensaje.textContent = "⚠️ Entrada inválida. Ingresa una letra.";
-        mensaje.className = "";
+        setMensaje("⚠️ Entrada inválida. Ingresa una letra.", "");
         return;
       }
 
-      if (usadas.includes(letra)) {
-        mensaje.textContent = `Ya usaste '${letra}'.`;
-        mensaje.className = "";
-        return;
-      }
-
-      usadas.push(letra);
-      actualizarUsadas();
-
-      if (palabraSecreta.includes(letra)) {
-        mensaje.textContent = `✅ ¡Bien! La letra '${letra}' está.`;
-        mensaje.className = "";
-      } else {
-        vidas--;
+      // llamar al servidor para procesar la letra
+      pedirGestion({
+        entrada: letra,
+        intento_arriesgar: null,
+        palabra_secreta: palabraSecreta,
+        vidas: vidas,
+        usadas: usadas
+      }).then(resp => {
+        vidas = resp.vidas;
+        usadas = resp.usadas;
         document.getElementById("vidas").textContent = vidas;
-        mensaje.textContent = `❌ Fallaste con '${letra}'.`;
-        mensaje.className = "";
-      }
-
-      mostrarPalabra();
-
-      const palabraMostrada = document.getElementById("palabra").textContent;
-      if (!palabraMostrada.includes("_")) {
-        mensaje.textContent = "¡Ganaste!";
-        mensaje.className = "win";
-      } else if (vidas <= 0) {
-        mensaje.textContent = "¡Perdiste!";
-        mensaje.className = "lose";
-      }
+        actualizarUsadas();
+        mostrarPalabra(resp.palabra_mostrada);
+        setMensaje(resp.mensaje || "", resp.juego_terminado && resp.vidas > 0 ? "win" : "");
+        mostrarPartes();
+        comprobarFin(resp);
+      }).catch(() => setMensaje("Error de conexión con el servidor.", ""));
     });
 
-    // Obtener la palabra aleatoria del servidor y luego inicializar la vista
-    fetch("/palabra")
-      .then(res => res.json())
-      .then(data => {
-        palabraSecreta = data.palabra;
-        mostrarPalabra();
-      })
-      .catch(() => {
-        // Fallback si el fetch falla
-        palabraSecreta = "pera";
-        mostrarPalabra();
+    document.getElementById("btn-arriesgar").addEventListener("click", () => {
+      const intento = document.getElementById("arriesgar-palabra").value.trim().toLowerCase();
+      document.getElementById("arriesgar-palabra").value = "";
+
+      if (!intento) {
+        setMensaje("⚠️ Ingresa una palabra para arriesgar.", "");
+        return;
+      }
+
+      pedirGestion({
+        entrada: "arriesgar",
+        intento_arriesgar: intento,
+        palabra_secreta: palabraSecreta,
+        vidas: vidas,
+        usadas: usadas
+      }).then(resp => {
+        vidas = resp.vidas;
+        usadas = resp.usadas;
+        document.getElementById("vidas").textContent = vidas;
+        actualizarUsadas();
+        mostrarPalabra(resp.palabra_mostrada);
+        setMensaje(resp.mensaje || resp.final_message || "", resp.juego_terminado && resp.vidas > 0 ? "win" : "lose");
+        mostrarPartes();
+        comprobarFin(resp);
+      }).catch(() => setMensaje("Error de conexión con el servidor.", ""));
+    });
+
+    // solicita /palabra hasta obtener una distinta de la actual (máx 6 intentos)
+    const obtenerPalabraDiferente = async (actual) => {
+      for (let i=0;i<6;i++) {
+        try {
+          const res = await fetch("/palabra");
+          const data = await res.json();
+          const p = (data.palabra || "").toLowerCase();
+          if (!p) continue;
+          if (!actual || p !== actual) return p;
+        } catch (e) { break; }
+      }
+      // fallback
+      return actual || "pera";
+    };
+
+    const iniciarNuevaPartida = async (evitarIgual = false) => {
+      bloquearInputs(false);
+      setMensaje("");
+      vidas = 6;
+      usadas = [];
+      document.getElementById("vidas").textContent = vidas;
+      mostrarPartes();
+      document.getElementById("usadas").textContent = "Ninguna";
+
+      if (evitarIgual) {
+        palabraSecreta = await obtenerPalabraDiferente(palabraSecreta);
+      } else {
+        try {
+          const res = await fetch("/palabra");
+          const data = await res.json();
+          palabraSecreta = (data.palabra || "pera").toLowerCase();
+        } catch (e) {
+          palabraSecreta = "pera";
+        }
+      }
+
+      // pedir al servidor la visualización inicial (sin entrada) para obtener palabra_mostrada
+      // llamamos gestionar con entrada inválida para que nos devuelva la palabra_mostrada actual
+      pedirGestion({
+        entrada: "", // entrada inválida -> gestionará el mensaje pero devolverá estado
+        intento_arriesgar: null,
+        palabra_secreta: palabraSecreta,
+        vidas: vidas,
+        usadas: usadas
+      }).then(resp => {
+        // resp.palabra_mostrada contiene la representación inicial
+        mostrarPalabra(resp.palabra_mostrada);
+        actualizarUsadas();
+      }).catch(() => {
+        mostrarPalabra("_ ".repeat(palabraSecreta.length));
+        actualizarUsadas();
       });
+    };
+
+    // Inicialización
+    iniciarNuevaPartida();
   </script>
 </body>
 

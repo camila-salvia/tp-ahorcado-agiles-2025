@@ -1,4 +1,4 @@
-    /* ====== ESTILOS GENERALES ====== */
+/* ====== ESTILOS GENERALES ====== */
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #74ABE2, #5563DE);
@@ -113,4 +113,47 @@
       font-size: 0.9rem;
       opacity: 0.8;
       margin-top: 0.5rem;
+    }
+
+    /* Estilos para el hangman SVG y ajustes de UI */
+    #hangman-container {
+      display: flex;
+      justify-content: center;
+      margin: 0.5rem 0 0.75rem 0;
+    }
+
+    #hangman-container svg {
+      max-width: 160px;
+      height: auto;
+    }
+
+    /* Ajustes inputs arriesgar */
+    #input-container {
+      margin-top: 1rem;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #input-container input[type="text"] {
+      padding: 0.45rem 0.9rem;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      width: auto;
+    }
+
+    #btn-arriesgar {
+      background: #ffb86b;
+      color: #3b2f1b;
+    }
+
+    .win {
+      color: #00ffae;
+      text-shadow: 0 0 10px #00ffae;
+    }
+
+    .lose {
+      color: #ff4b5c;
+      text-shadow: 0 0 10px #ff4b5c;
     }
