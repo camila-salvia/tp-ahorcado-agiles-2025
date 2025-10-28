@@ -14,3 +14,8 @@ Feature: Jugar al ahorcado desde la interfaz web
         Given abro el juego del ahorcado
         When ingreso las letras "p y e o r q a"
         Then veo el mensaje "Ganaste!"
+
+    Scenario: Pierdo con algunos aciertos
+        Given abro el juego del ahorcado
+        When ingreso las letras "z u p l r d k c"
+        Then veo el mensaje "Perdiste!"
