@@ -5,7 +5,10 @@ from ahorcado import (
    restar_vida,
    adivinar_palabra,
    arriesgar,
-   procesar_letra
+   procesar_letra,
+   generar_palabra_mostrada,
+   obtener_mensaje_final,
+   gestionar_entrada
 )
 
 palabra_secreta = "pera"
@@ -65,6 +68,11 @@ def test_adivina_palabra():
   usadas = {"p", "e","r","a"} #letras ya usadas
   assert adivinar_palabra(usadas, palabra_secreta) is True
 
+# test 18: no gana si faltan letras por adivinar
+def test_no_adivina_palabra_aun():
+    usadas = {"p", "e"}
+    assert adivinar_palabra(usadas, "pera") is False
+
 #-------------------------------
 # FUNCIÓN: restar_vida
 # test 9: quitar vida por letra incorrecta
@@ -105,3 +113,90 @@ def test_procesar_letra_repetida():
     assert vidas == 6
     assert "p" in usadas
     assert acierto is True
+
+#-------------------------------
+# FUNCION: generar_palabra_mostrada
+# test 19: muestra palabra vacia
+def test_mostrar_palabra_vacia():
+    assert generar_palabra_mostrada("gato", []) == "_ _ _ _ "
+
+# test 20: muestra palabra con algunas letras adivinadas
+def test_mostrar_palabra_parcial():
+    assert generar_palabra_mostrada("gato", ["g", "o"]) == "g _ _ o "
+
+# test 21: muestra palabra completamente adivinada
+def test_mostrar_palabra_completa():
+    assert generar_palabra_mostrada("gato", ["g", "a", "t", "o"]) == "g a t o "
+
+#-------------------------------
+# FUNCION: obtener_mensaje_final
+
+# test 22: mostrar mensaje de victoria
+def test_mensaje_final_victoria():
+    usadas = {"p", "e", "r", "a"}
+    assert "¡Felicitaciones!" in obtener_mensaje_final(usadas, "pera")
+
+# test 23: mostrar mensaje de derrota
+def test_mensaje_final_derrota():
+    usadas = {"p", "e"}
+    assert "¡Perdiste!" in obtener_mensaje_final(usadas, "pera")
+
+# -------------------------------
+# FUNCION: gestionar_entrada
+palabra_secreta_test = "pera"
+vidas_iniciales_test = 6
+usadas_iniciales_test = ["p"]
+
+# test 24: acierta una letra
+def test_gestionar_letra_valida_acierto():
+    vidas, usadas, msg, fin = gestionar_entrada("e", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    assert vidas == 6
+    assert "e" in usadas
+    assert "¡Bien hecho!" in msg
+    assert fin is False
+
+# test 25: falla una letra
+def test_gestionar_letra_valida_error():
+    vidas, usadas, msg, fin = gestionar_entrada("z", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    assert vidas == 5
+    assert "z" in usadas
+    assert "¡Incorrecto!" in msg
+    assert fin is False
+
+# test 26: repite una letra
+def test_gestionar_letra_repetida():
+    vidas, usadas, msg, fin = gestionar_entrada("p", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    assert vidas == 6
+    assert usadas == usadas_iniciales_test # No debe cambiar
+    assert "Ya intentaste" in msg
+    assert fin is False
+
+# test 27: entrada inválida
+def test_gestionar_letra_invalida():
+    vidas, usadas, msg, fin = gestionar_entrada("?#", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    assert vidas == 6
+    assert "inválida" in msg
+    assert fin is False
+
+# test 28: arriesga y gana
+def test_gestionar_arriesgar_gana():
+    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "pera", palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    assert vidas == 6
+    assert set(palabra_secreta_test).issubset(usadas) # Verifica que se hayan agregado todas las letras
+    assert fin is True
+
+# test 29: arriesga y pierde
+def test_gestionar_arriesgar_pierde():
+    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "gato", palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    assert vidas == 0 # Pierde todas las vidas
+    assert "¡Incorrecto!" in msg
+    assert fin is True
+
+# test 30: acierta la última letra y gana
+def test_gestionar_acierto_final_gana():
+    usadas_casi = ["p", "e", "r"]
+    vidas, usadas, msg, fin = gestionar_entrada("a", None, palabra_secreta_test, 6, usadas_casi)
+    assert vidas == 6
+    assert "a" in usadas
+    assert "¡Bien hecho!" in msg
+    assert fin is True # El juego debe terminar porque adivinó la palabra

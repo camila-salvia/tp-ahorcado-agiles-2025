@@ -42,52 +42,98 @@ def procesar_letra(letra: str, palabra_secreta: str, vidas: int, usadas: list) -
     else:
         nuevas_vidas = restar_vida(vidas)
         return (nuevas_vidas, nuevas_usadas, False) # Error
+    
 
+##Genera la cadena de la palabra con guiones bajos y letras adivinadas
+def generar_palabra_mostrada(palabra_secreta: str, usadas: list) -> str: 
+    palabra_mostrada = ""
+    for letra in palabra_secreta:
+        if letra in usadas:
+            palabra_mostrada += letra + " "
+        else:
+            palabra_mostrada += "_ "
+    return palabra_mostrada 
+
+def obtener_mensaje_final(usadas: list, palabra_secreta: str) -> str:
+    if adivinar_palabra(usadas, palabra_secreta):
+        return f"\n¡Felicitaciones! Adivinaste la palabra '{palabra_secreta}' y ganaste el juego."
+    else:
+        return f"\n¡Perdiste! La palabra secreta era '{palabra_secreta}'."
+
+def gestionar_entrada(entrada: str, intento_arriesgar: str, palabra_secreta: str, vidas: int, usadas: list) -> tuple:
+    """
+    Contiene la lógica principal de decisión del juego.
+    Devuelve: (nuevas_vidas, nuevas_usadas, mensaje_usuario, juego_terminado)
+    
+    'intento_arriesgar' es la palabra ingresada si entrada=='arriesgar'. 
+    """
+    juego_terminado = False
+    mensaje = ""
+
+    if entrada == "arriesgar":
+        if arriesgar(intento_arriesgar, palabra_secreta):
+            # Agrega todas las letras de la palabra secreta a 'usadas' para ganar
+            nuevas_usadas = usadas + list(set(palabra_secreta) - set(usadas))
+            mensaje = "" # El mensaje de victoria se maneja al final
+            juego_terminado = True
+            return (vidas, nuevas_usadas, mensaje, juego_terminado)
+        else:
+            mensaje = f"¡Incorrecto! La palabra no es '{intento_arriesgar}'. Perdiste."
+            juego_terminado = True
+            return (0, usadas, mensaje, juego_terminado) # Vidas a 0
+
+    elif entrada_valida(entrada):
+        if verificar_disponibilidad(entrada, usadas):
+            vidas, usadas, acierto = procesar_letra(entrada, palabra_secreta, vidas, usadas)
+            if acierto:
+                mensaje = f"¡Bien hecho! La letra '{entrada}' está en la palabra."
+            else:
+                mensaje = f"¡Incorrecto! La letra '{entrada}' no está. Pierdes una vida."
+        else:
+            mensaje = f"Ya intentaste con la letra '{entrada}'. ¡Prueba otra!"
+    else:
+        mensaje = "Entrada inválida. Por favor, ingrese una sola letra o la palabra ARRIESGAR."
+    
+    # Comprobar si ganó por letras después del turno
+    if adivinar_palabra(usadas, palabra_secreta):
+            juego_terminado = True
+
+    return (vidas, usadas, mensaje, juego_terminado)
 
 #PROGRAMA PRINCIPAL
-if __name__ == "__main__":
-
+def jugar():
     palabras_posibles = ["pera", "gato", "elefante", "computadora", "python", "televisor"]
     palabra_secreta = random.choice(palabras_posibles)
     usadas = []
     vidas = 6
+    juego_terminado = False
 
     print("¡Bienvenido al juego del Ahorcado!")
 
-    while vidas > 0 and not adivinar_palabra(usadas, palabra_secreta):
+    while vidas > 0 and not juego_terminado:
         print(f"\nVidas restantes: {vidas}")
         print(f"Letras usadas: {', '.join(usadas) if usadas else 'Ninguna'}")
-
-        palabra_mostrada = ""
-        for letra in palabra_secreta:
-            if letra in usadas:
-                palabra_mostrada += letra + " "
-            else:
-                palabra_mostrada += "_ "
-        print("Palabra: " + palabra_mostrada)
+        print("Palabra: " + generar_palabra_mostrada(palabra_secreta, usadas))
 
         entrada = input("Ingrese una letra o escriba ARRIESGAR para intentar adivinar la palabra: ").lower()
-        if entrada == "arriesgar":
-            intento = input("Ingrese la palabra: ")
-            if arriesgar (intento, palabra_secreta):
-                usadas.extend(list(set(palabra_secreta))) #agrega las letras que faltan
-            else:
-                vidas = 0
-            break
-
-        elif entrada_valida(entrada):
-            if verificar_disponibilidad(entrada, usadas):
-                vidas, usadas, acierto = procesar_letra(entrada, palabra_secreta, vidas, usadas)
-                if acierto:
-                    print(f"¡Bien hecho! La letra '{entrada}' está en la palabra.")
-                else:
-                    print(f"¡Incorrecto! La letra '{entrada}' no está. Pierdes una vida.")
-            else:
-                print(f"Ya intentaste con la letra '{entrada}'. ¡Prueba otra!")
-        else:
-            print("Entrada inválida. Por favor, ingrese una sola letra o la palabra ARRIESGAR.")
+        intento_arriesgar = None
         
-    if adivinar_palabra(usadas, palabra_secreta):
-        print(f"\n¡Felicitaciones! Adivinaste la palabra '{palabra_secreta}' y ganaste el juego.")
-    else:
-        print(f"\n¡Perdiste! La palabra secreta era '{palabra_secreta}'.")
+        if entrada == "arriesgar":
+            intento_arriesgar = input("Ingrese la palabra: ")
+        
+        # Toda la lógica de decisión se mueve a la función testable
+        vidas, usadas, mensaje, juego_terminado_turno = gestionar_entrada(
+            entrada, intento_arriesgar, palabra_secreta, vidas, usadas
+        )
+        
+        if mensaje:
+            print(mensaje)
+        
+        # 'juego_terminado_turno' es True si se arriesgó (bien o mal) o si se adivinó la última letra
+        if juego_terminado_turno:
+            juego_terminado = True
+    
+    print(obtener_mensaje_final(usadas, palabra_secreta))
+
+if __name__ == "__main__":
+    jugar()
