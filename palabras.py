@@ -4,5 +4,11 @@ palabras_posibles = [
   "elefante", 
   "computadora", 
   "python", 
-  "televisor"
+  "televisor",
+  "cocina",
+  "perro",
+  "horno",
+  "ventana",
+  "libro",
+  "silla"
   ]
