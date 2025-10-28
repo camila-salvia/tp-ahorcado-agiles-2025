@@ -14,6 +14,14 @@ palabra_secreta = "pera"
 # test 1: ingreso de caracter inválido
 def test_validar_caracter_invalido():
 	assert entrada_valida("#") is False
+
+# test 14: ingreso de más de un caracter
+def test_validar_mas_de_un_caracter():
+    assert entrada_valida("ab") is False
+
+# test 15: ingreso de caracter vacío
+def test_validar_caracter_vacio():
+    assert entrada_valida("") is False
    
 # test 2: ingreso caracter válido
 def test_validar_caracter_valido():
@@ -31,7 +39,6 @@ def test_ingresa_letra_dicha():
   usadas = {"c", "a"} #letras ya usadas
   assert verificar_disponibilidad("c", usadas) is False #c está en usadas
 
-
 #-------------------------------
 # FUNCIÓN: arriesgar
 # test 5: arriesga la palabra y gana el juego
@@ -45,6 +52,10 @@ def test_arriesga_palabra_pierde():
 # test 7: la palabra vale, aunque sea mayúsculas
 def test_validar_palabra_mayusc():
     assert arriesgar("PERA", palabra_secreta) is True
+
+# test 17: arriesga palabra vacía
+def test_arriesgar_palabra_vacia():
+   assert arriesgar("", palabra_secreta) is False
 
 
 #-------------------------------
@@ -87,4 +98,10 @@ def test_validar_letra_mayusc_minusc():
    assert vidas == 4
    assert "a" in usadas
    assert acierto is True
-   
+
+# test 16: procesar letra repetida  ??????
+def test_procesar_letra_repetida():
+    vidas, usadas, acierto = procesar_letra("p", palabra_secreta, 6, ["p"])
+    assert vidas == 6
+    assert "p" in usadas
+    assert acierto is True

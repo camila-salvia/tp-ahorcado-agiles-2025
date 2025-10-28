@@ -2,9 +2,9 @@ import random
 
 # Verifica si la entrada es válida o no
 def entrada_valida(letra_ingresada: str) -> bool:
-    if letra_ingresada.isalpha() and len(letra_ingresada) == 1:
-        return True # es válida TEST 2
-    return False # no es válida TEST 1
+    if letra_ingresada.isalpha() and len(letra_ingresada) == 1: # TEST 1 y TEST 14
+        return True # es válida        # TEST 2
+    return False # no es válida        # TEST 1 y TEST 14 y TEST 15
 
 # Verifica si la letra ingresada ya fue usada
 def verificar_disponibilidad(letra: str, usadas: list) -> bool:
