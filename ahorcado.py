@@ -1,4 +1,5 @@
 import random
+from palabras import palabras_posibles
 
 # Verifica si la entrada es válida o no
 def entrada_valida(letra_ingresada: str) -> bool:
@@ -102,7 +103,6 @@ def gestionar_entrada(entrada: str, intento_arriesgar: str, palabra_secreta: str
 
 #PROGRAMA PRINCIPAL
 def jugar():
-    palabras_posibles = ["pera", "gato", "elefante", "computadora", "python", "televisor"]
     palabra_secreta = random.choice(palabras_posibles)
     usadas = []
     vidas = 6
