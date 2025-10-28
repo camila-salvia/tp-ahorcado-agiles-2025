@@ -1,1 +1,6 @@
+Feature: Jugar al ahorcado desde la interfaz web
 
+    Scenario: Juego perfecto
+        Given abro el juego del ahorcado
+        When ingreso las letras "p e r a"
+        Then veo el mensaje "Ganaste!"
