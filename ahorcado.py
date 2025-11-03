@@ -1,35 +1,58 @@
 import random
 from palabras import palabras_posibles
 
-# Verifica si la entrada es válida o no
+"""
+    entrada_valida()
+        Descripción: Verifica si la entrada es válida o no.
+        Devuelve True si la entrada es válida.
+        Devuelve False si no es válida.
+"""
 def entrada_valida(letra_ingresada: str) -> bool:
-    if letra_ingresada.isalpha() and len(letra_ingresada) == 1: # TEST 1 y TEST 14
-        return True # es válida        # TEST 2
-    return False # no es válida        # TEST 1 y TEST 14 y TEST 15
+    if letra_ingresada.isalpha() and len(letra_ingresada) == 1:
+        return True # es válida        # TEST 
+    return False # no es válida        # TEST 
 
-# Verifica si la letra ingresada ya fue usada
+"""
+    verificar_disponibilidad()
+        Descripción: Verifica si la letra ingresada ya fue usada.
+        Devuelve True si la letra está disponible.
+        Devuelve False si no está disponible (ya fue usada).
+"""
 def verificar_disponibilidad(letra: str, usadas: list) -> bool:
-    if letra in usadas:
-        return False # no está disponible (ya fue usada) TEST 4
-    return True # está disponible (puede usarse) TEST 3
+    letra = letra.lower()
+    usadas = [l.lower() for l in usadas]
+    return letra not in usadas
 
-
+"""
+    restar_vida()
+        Descripción: Resta una vida al contador de vidas.
+        Devuelve el nuevo número de vidas.
+"""
 def restar_vida(vidas: int)-> int:
     if vidas > 0:
         vidas -= 1
     return vidas
 
-# Comprueba si el conjunto de letras de la palabra es un subconjunto de las letras ya dichas
+
+"""
+    adivinar_palabra()
+    Descripción: Verifica si todas las letras de la palabra secreta han sido adivinadas, comprobando si el conjunto de letras de la palabra es un subconjunto de las letras ya dichas.
+    Devuelve True si la palabra ha sido adivinada: gana el juego.
+    Devuelve False si la palabra no ha sido adivinada: sigue jugando.
+"""
 def adivinar_palabra(usadas: list, palabra_secreta: str) -> bool:
     return set(palabra_secreta).issubset(usadas) 
-            # True -> gana juego
-            # False -> sigue jugando
 
-# Jugador arriesga la palabra completa
+"""
+    arriesgar()
+    Descripción: Jugador arriesga la palabra completa y verifica si la palabra arriesgada es correcta.
+    Devuelve True si la palabra arriesgada es correcta: gana el juego.
+    Devuelve False si la palabra arriesgada es incorrecta: pierde el juego.
+"""
 def arriesgar(palabra: str, palabra_secreta: str) -> bool:
-    if not palabra.lower() == palabra_secreta: # TEST 7
-        return False   #arriega y falla TEST 6
-    return True   #arriega y gana   TEST 5
+    if not palabra.lower() == palabra_secreta:
+        return False
+    return True
 
 # Procesa la letra ingresada y devuelve el nuevo estado del juego
     # Devuelve (nuevas_vidas, nuevas_usadas, fue_acierto)
