@@ -96,13 +96,14 @@ def obtener_mensaje_final(usadas: list, palabra_secreta: str) -> str:
     else:
         return f"\n¡Perdiste! La palabra secreta era '{palabra_secreta}'."
 
-def gestionar_entrada(entrada: str, intento_arriesgar: str, palabra_secreta: str, vidas: int, usadas: list) -> tuple:
-    """
-    Contiene la lógica principal de decisión del juego.
-    Devuelve: (nuevas_vidas, nuevas_usadas, mensaje_usuario, juego_terminado)
+"""
+    gestionar_entrada()
+        Descripción: Contiene la lógica principal de decisión del juego.
+        Devuelve: (nuevas_vidas, nuevas_usadas, mensaje_usuario, juego_terminado)
     
-    'intento_arriesgar' es la palabra ingresada si entrada=='arriesgar'. 
-    """
+        'intento_arriesgar' es la palabra ingresada si entrada=='arriesgar'. 
+"""
+def gestionar_entrada(entrada: str, intento_arriesgar: str, palabra_secreta: str, vidas: int, usadas: list) -> tuple:
     juego_terminado = False
     mensaje = ""
 
@@ -110,7 +111,7 @@ def gestionar_entrada(entrada: str, intento_arriesgar: str, palabra_secreta: str
         if arriesgar(intento_arriesgar, palabra_secreta):
             # Agrega todas las letras de la palabra secreta a 'usadas' para ganar
             nuevas_usadas = usadas + list(set(palabra_secreta) - set(usadas))
-            mensaje = "" # El mensaje de victoria se maneja al final
+            mensaje = "" # se maneja al final
             juego_terminado = True
             return (vidas, nuevas_usadas, mensaje, juego_terminado)
         else:
@@ -130,10 +131,11 @@ def gestionar_entrada(entrada: str, intento_arriesgar: str, palabra_secreta: str
     else:
         mensaje = "Entrada inválida. Por favor, ingrese una sola letra o la palabra ARRIESGAR."
     
-    # Comprobar si ganó por letras después del turno
+    # Comprobar si ganó después del turno
     if adivinar_palabra(usadas, palabra_secreta):
             juego_terminado = True
-
+    elif vidas == 0:  # se quedó sin vidas
+        juego_terminado = True
     return (vidas, usadas, mensaje, juego_terminado)
 
 #PROGRAMA PRINCIPAL

@@ -173,59 +173,58 @@ def test_mensaje_final_derrota():
 
 # -------------------------------
 # FUNCION: gestionar_entrada
-palabra_secreta_test = "pera"
-vidas_iniciales_test = 6
-usadas_iniciales_test = ["p"]
+vidas_iniciales = 6
+usadas_iniciales = ["p"]
 
-# test : acierta una letra
+# test 28: acierta una letra
 def test_gestionar_letra_valida_acierto():
-    vidas, usadas, msg, fin = gestionar_entrada("e", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    vidas, usadas, msg, fin = gestionar_entrada("e", None, palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 6
     assert "e" in usadas
     assert "¡Bien hecho!" in msg
     assert fin is False
 
-# test : falla una letra
+# test 29: falla una letra
 def test_gestionar_letra_valida_error():
-    vidas, usadas, msg, fin = gestionar_entrada("z", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    vidas, usadas, msg, fin = gestionar_entrada("z", None, palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 5
     assert "z" in usadas
     assert "¡Incorrecto!" in msg
     assert fin is False
 
-# test : repite una letra
+# test 30: repite una letra
 def test_gestionar_letra_repetida():
-    vidas, usadas, msg, fin = gestionar_entrada("p", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    vidas, usadas, msg, fin = gestionar_entrada("p", None, palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 6
-    assert usadas == usadas_iniciales_test # No debe cambiar
+    assert usadas == usadas_iniciales # No debe cambiar
     assert "Ya intentaste" in msg
     assert fin is False
 
-# test : entrada inválida
+# test 31: entrada inválida
 def test_gestionar_letra_invalida():
-    vidas, usadas, msg, fin = gestionar_entrada("?#", None, palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    vidas, usadas, msg, fin = gestionar_entrada("?#", None, palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 6
     assert "inválida" in msg
     assert fin is False
 
-# test : arriesga y gana
+# test 32: arriesga y gana
 def test_gestionar_arriesgar_gana():
-    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "pera", palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "pera", palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 6
-    assert set(palabra_secreta_test).issubset(usadas) # Verifica que se hayan agregado todas las letras
+    assert set(palabra_secreta).issubset(usadas) # Verifica que se hayan agregado todas las letras
     assert fin is True
 
-# test : arriesga y pierde
+# test 33: arriesga y pierde
 def test_gestionar_arriesgar_pierde():
-    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "gato", palabra_secreta_test, vidas_iniciales_test, usadas_iniciales_test)
+    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "gato", palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 0 # Pierde todas las vidas
     assert "¡Incorrecto!" in msg
     assert fin is True
 
-# test : acierta la última letra y gana
+# test 34: acierta la última letra y gana
 def test_gestionar_acierto_final_gana():
     usadas_casi = ["p", "e", "r"]
-    vidas, usadas, msg, fin = gestionar_entrada("a", None, palabra_secreta_test, 6, usadas_casi)
+    vidas, usadas, msg, fin = gestionar_entrada("a", None, palabra_secreta, 6, usadas_casi)
     assert vidas == 6
     assert "a" in usadas
     assert "¡Bien hecho!" in msg
