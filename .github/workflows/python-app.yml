@@ -45,17 +45,15 @@ jobs:
         name: coverage-report
         path: coverage.xml # archivo generado por pytest-cov
     # --- Requisito 6: CI Server ejecuta Análisis Estático de Código (SonarSource) ---
-    # NOTA: Necesitarás configurar un proyecto en SonarCloud/SonarQube y crear secrets en GitHub
     - name: Ejecutar SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2.2.0
       env:
-        # Debes definir este secret en la configuración de tu repositorio de GitHub
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
         # projectKey y organization son específicos de tu configuración de SonarCloud
         # Necesitarás establecer estas variables de entorno en GitHub Actions o SonarCloud
       with:
-        projectKey: 'TU_CLAVE_DE_PROYECTO_EN_SONAR'
-        organization: 'TU_ORGANIZACION_EN_SONAR'
+        projectKey: 'camila-salvia_tp-ahorcado-agiles-2025'
+        organization: 'camila-salvia'
         # Esto indica a SonarCloud dónde está tu informe de cobertura
         args: >
           -Dsonar.python.coverage.reportPaths=coverage.xml
