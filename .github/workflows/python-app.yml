@@ -51,8 +51,6 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
       with:
         args: >
-          -Dsonar.projectKey=camila-salvia_tp-ahorcado-agiles-2025
-          -Dsonar.organization=camila-salvia
           -Dsonar.python.coverage.reportPaths=coverage.xml
           -Dsonar.coverage.jacoco.xmlReportPaths=coverage.xml
 
