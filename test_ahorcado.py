@@ -144,30 +144,32 @@ def test_procesar_letra_sin_vidas():
 
 #-------------------------------
 # FUNCION: generar_palabra_mostrada
-# test : muestra palabra vacia
+
+# test 23: muestra palabra vacia
 def test_mostrar_palabra_vacia():
     assert generar_palabra_mostrada("gato", []) == "_ _ _ _ "
 
-# test : muestra palabra con algunas letras adivinadas
+# test 24: muestra palabra con algunas letras adivinadas
 def test_mostrar_palabra_parcial():
     assert generar_palabra_mostrada("gato", ["g", "o"]) == "g _ _ o "
 
-# test : muestra palabra completamente adivinada
+# test 25: muestra palabra completamente adivinada
 def test_mostrar_palabra_completa():
     assert generar_palabra_mostrada("gato", ["g", "a", "t", "o"]) == "g a t o "
 
 #-------------------------------
 # FUNCION: obtener_mensaje_final
 
-# test : mostrar mensaje de victoria
+# test 26: mostrar mensaje de victoria
 def test_mensaje_final_victoria():
     usadas = {"p", "e", "r", "a"}
     assert "¡Felicitaciones!" in obtener_mensaje_final(usadas, "pera")
 
-# test : mostrar mensaje de derrota
+# test 27: mostrar mensaje de derrota
 def test_mensaje_final_derrota():
     usadas = {"p", "e"}
     assert "¡Perdiste!" in obtener_mensaje_final(usadas, "pera")
+
 
 # -------------------------------
 # FUNCION: gestionar_entrada

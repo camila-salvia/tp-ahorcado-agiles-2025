@@ -36,26 +36,30 @@ def restar_vida(vidas: int)-> int:
 
 """
     adivinar_palabra()
-    Descripción: Verifica si todas las letras de la palabra secreta han sido adivinadas, comprobando si el conjunto de letras de la palabra es un subconjunto de las letras ya dichas.
-    Devuelve True si la palabra ha sido adivinada: gana el juego.
-    Devuelve False si la palabra no ha sido adivinada: sigue jugando.
+        Descripción: Verifica si todas las letras de la palabra secreta han sido adivinadas, comprobando si el conjunto de letras de la palabra es un subconjunto de las letras ya dichas.
+        Devuelve True si la palabra ha sido adivinada: gana el juego.
+        Devuelve False si la palabra no ha sido adivinada: sigue jugando.
 """
 def adivinar_palabra(usadas: list, palabra_secreta: str) -> bool:
     return set(palabra_secreta).issubset(usadas) 
 
 """
     arriesgar()
-    Descripción: Jugador arriesga la palabra completa y verifica si la palabra arriesgada es correcta.
-    Devuelve True si la palabra arriesgada es correcta: gana el juego.
-    Devuelve False si la palabra arriesgada es incorrecta: pierde el juego.
+        Descripción: Jugador arriesga la palabra completa y verifica si la palabra arriesgada es correcta.
+        Devuelve True si la palabra arriesgada es correcta: gana el juego.
+        Devuelve False si la palabra arriesgada es incorrecta: pierde el juego.
 """
 def arriesgar(palabra: str, palabra_secreta: str) -> bool:
     if not palabra.lower() == palabra_secreta:
         return False
     return True
 
-# Procesa la letra ingresada y devuelve el nuevo estado del juego
-    # Devuelve (nuevas_vidas, nuevas_usadas, fue_acierto)
+
+"""
+    procesar_letra()
+        Descripción: Procesa la letra ingresada, actualiza las vidas y las letras usadas.
+        Devuelve una tupla con (nuevas_vidas, nuevas_usadas, fue_acierto)
+"""
 def procesar_letra(letra: str, palabra_secreta: str, vidas: int, usadas: list) -> tuple[int, list, bool]:
     
     letra = letra.lower() 
@@ -68,7 +72,11 @@ def procesar_letra(letra: str, palabra_secreta: str, vidas: int, usadas: list) -
         return (nuevas_vidas, nuevas_usadas, False) # Error
     
 
-##Genera la cadena de la palabra con guiones bajos y letras adivinadas
+"""
+    generar_palabra_mostrada()
+        Descripción: Genera la representación de la palabra secreta con las letras adivinadas y guiones bajos para letras no adivinadas.
+        Devuelve una cadena con la palabra mostrada.
+"""
 def generar_palabra_mostrada(palabra_secreta: str, usadas: list) -> str: 
     palabra_mostrada = ""
     for letra in palabra_secreta:
@@ -78,9 +86,13 @@ def generar_palabra_mostrada(palabra_secreta: str, usadas: list) -> str:
             palabra_mostrada += "_ "
     return palabra_mostrada 
 
+"""
+    obtener_mensaje_final()
+        Descripción: Genera el mensaje final del juego según si el jugador ganó o perdió.
+"""
 def obtener_mensaje_final(usadas: list, palabra_secreta: str) -> str:
     if adivinar_palabra(usadas, palabra_secreta):
-        return f"\n¡Felicitaciones! Adivinaste la palabra '{palabra_secreta}' y ganaste el juego."
+        return f"\n¡Felicitaciones! Adivinaste la palabra y ganaste el juego."
     else:
         return f"\n¡Perdiste! La palabra secreta era '{palabra_secreta}'."
 

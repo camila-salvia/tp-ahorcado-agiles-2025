@@ -1,3 +1,4 @@
+## Las palabras deben escribirse en minúsculas y sin tildes.
 palabras_posibles = [
   "pera", 
   "gato", 
