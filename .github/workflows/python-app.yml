@@ -49,13 +49,10 @@ jobs:
       uses: SonarSource/sonarcloud-github-action@v2.2.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
-        # projectKey y organization son específicos de tu configuración de SonarCloud
-        # Necesitarás establecer estas variables de entorno en GitHub Actions o SonarCloud
       with:
-        projectKey: 'camila-salvia_tp-ahorcado-agiles-2025'
-        organization: 'camila-salvia'
-        # Esto indica a SonarCloud dónde está tu informe de cobertura
         args: >
+          -Dsonar.projectKey=camila-salvia_tp-ahorcado-agiles-2025
+          -Dsonar.organization=camila-salvia
           -Dsonar.python.coverage.reportPaths=coverage.xml
           -Dsonar.coverage.jacoco.xmlReportPaths=coverage.xml
 
