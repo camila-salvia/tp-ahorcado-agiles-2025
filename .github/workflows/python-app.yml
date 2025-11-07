@@ -1,5 +1,4 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
 name: Python application
 
@@ -11,14 +10,17 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Necesario para SonarCloud
+
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
@@ -28,6 +30,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
     # --- Requisito 3: CI Server solo compile (verificación de sintaxis) ---
     - name: Lint with flake8
       run: |
@@ -35,6 +38,7 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        
     # --- Requisito 4 & 5: CI Server ejecuta Unit Tests y Code Coverage ---
     - name: Test with pytest and generate coverage report
       run: |
@@ -44,14 +48,17 @@ jobs:
       with:
         name: coverage-report
         path: coverage.xml # archivo generado por pytest-cov
+        
     # --- Requisito 6: CI Server ejecuta Análisis Estático de Código (SonarSource) ---
     - name: Ejecutar SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v2.2.0
+      uses: SonarSource/sonarcloud-github-action@v2
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
       with:
         args: >
+          -Dsonar.organization=camila-salvia
+          -Dsonar.projectKey=camila-salvia_tp-ahorcado-agiles-2025
+          -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.python.coverage.reportPaths=coverage.xml
-          -Dsonar.coverage.jacoco.xmlReportPaths=coverage.xml
 
     # --- Los pasos de Deploy/AT (Requisitos 8 y 9) vendrían aquí ---
