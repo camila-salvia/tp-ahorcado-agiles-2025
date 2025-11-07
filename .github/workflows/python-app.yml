@@ -54,13 +54,5 @@ jobs:
       uses: SonarSource/sonarcloud-github-action@v2
       env:
         SONAR_TOKEN: ${{ secrets.TOKEN_REPO_AGILES }} 
-      with:
-        args: >
-          -Dsonar.organization=camila-salvia
-          -Dsonar.projectKey=camila-salvia_tp-ahorcado-agiles-2025
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.language=py
-          -Dsonar.sources=.
-          -Dsonar.python.coverage.reportPaths=coverage.xml
 
     # --- Los pasos de Deploy/AT (Requisitos 8 y 9) vendrían aquí ---
