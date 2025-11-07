@@ -56,4 +56,3 @@ jobs:
         SONAR_TOKEN: ${{ secrets.TOKEN_REPO_AGILES }} 
       with:
         projectBaseDir: .
-    # --- Los pasos de Deploy/AT (Requisitos 8 y 9) vendrían aquí ---
