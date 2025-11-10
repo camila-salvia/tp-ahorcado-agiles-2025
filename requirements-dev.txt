@@ -1,0 +1,13 @@
+# Heredar todo de producción
+-r requirements.txt
+
+# Frameworks de Pruebas 
+pytest        # Para ejecutar Unit Tests
+behave        # El "Cucumber" para Python (para ATDD)
+
+# 3. Automatización de UI 
+selenium      # Para controlar el navegador en los ATDD
+
+# 4. Calidad y Cobertura
+pytest-cov    # Para medir el Code Coverage de los Unit Tests
+flake8        # Para Análisis Estático (linting)

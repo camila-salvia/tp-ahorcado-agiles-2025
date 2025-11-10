@@ -12,8 +12,8 @@ from ahorcado import (
 )
 
 palabra_secreta = "pera"
-#-------------------------------
-#FUNCION: entrada_valida
+# -------------------------------
+# FUNCION: entrada_valida
 
 # test 1: ingreso de caracter inválido
 def test_validar_caracter_invalido():
@@ -41,8 +41,8 @@ def test_validar_caracter_valido_mayuscula():
 
 # test 6: ingresa una letra que se encuentra disponible minuscula
 def test_ingresa_letra_aun_no_dicha():
-  usadas = ["c", "a"] 
-  assert verificar_disponibilidad("p", usadas) is True 
+  usadas = ["c", "a"]
+  assert verificar_disponibilidad("p", usadas) is True
 
 # test 7: ingresa una letra que se encuentra disponible mayúscula
 def test_ingresa_letra_aun_no_dicha_mayuscula():
@@ -60,7 +60,7 @@ def test_ingresa_letra_dicha_mayuscula():
   assert verificar_disponibilidad("C", usadas) is False
 
 
-#-------------------------------
+# -------------------------------
 # FUNCIÓN: restar_vida
 
 # test 10: quitar vida por letra incorrecta
@@ -77,7 +77,7 @@ def test_restar_vida_negativo():
     assert restar_vida(-3) == -3  # no debería modificar valores negativos
 
 
-#-------------------------------
+# -------------------------------
 # FUNCIÓN: adivinar_palabra
 
 # test 13: gana por adivinar todas las letras
@@ -90,7 +90,7 @@ def test_no_adivina_palabra_aun():
     usadas = ["p", "e"]
     assert adivinar_palabra(usadas, "pera") is False
 
-#-------------------------------
+# -------------------------------
 # FUNCIÓN: arriesgar
 
 # test 15: arriesga la palabra y gana el juego
@@ -110,8 +110,8 @@ def test_arriesgar_palabra_vacia():
    assert arriesgar("", palabra_secreta) is False
 
 
-#-------------------------------
-#FUNCIÓN: procesar_letra
+# -------------------------------
+# FUNCIÓN: procesar_letra
 
 # test 19: valida letra y acierta
 def test_procesar_letra_acierto():
@@ -120,7 +120,7 @@ def test_procesar_letra_acierto():
   assert "p" in usadas
   assert acierto is True
 
-#test 20: valida letra y falla
+# test 20: valida letra y falla
 def test_procesar_letra_fallo():
   vidas, usadas, acierto = procesar_letra("z", palabra_secreta, 6, [])
   assert vidas == 5
@@ -142,7 +142,7 @@ def test_procesar_letra_sin_vidas():
     assert acierto is False
 
 
-#-------------------------------
+# -------------------------------
 # FUNCION: generar_palabra_mostrada
 
 # test 23: muestra palabra vacia
@@ -157,7 +157,7 @@ def test_mostrar_palabra_parcial():
 def test_mostrar_palabra_completa():
     assert generar_palabra_mostrada("gato", ["g", "a", "t", "o"]) == "g a t o "
 
-#-------------------------------
+# -------------------------------
 # FUNCION: obtener_mensaje_final
 
 # test 26: mostrar mensaje de victoria

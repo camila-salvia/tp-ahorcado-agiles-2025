@@ -1,0 +1,2 @@
+Flask #framework web para correr la app
+gunicorn #servidor WSGI para correr la app en producción
