@@ -6,7 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-# Permisos para que SonarCloud pueda comentar en Pull Requests
 permissions:
   pull-requests: write
 
@@ -32,14 +31,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
 
-      - name: 4. Lint con Flake8 (Req 3)
+      - name: 4. Lint con Flake8
         run: |
           # stop the build if there are Python syntax errors
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-      - name: 5. Ejecutar Unit Tests y Cobertura (Req 1 y 2)
+      - name: 5. Ejecutar Unit Tests y Cobertura
         run: |
           pytest --cov=. --cov-report=xml --cov-report=term-missing
           
@@ -47,7 +46,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.TOKEN_REPO_AGILES }} # Usando tu nombre de secreto
+          SONAR_TOKEN: ${{ secrets.TOKEN_REPO_AGILES }}
 
   # ----------------------------------------------------
   # JOB 2: Pruebas de Aceptación (ATDD) 
@@ -73,19 +72,14 @@ jobs:
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
 
-      - name: Set up Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          CHROME_VERSION=$(google-chrome --version | grep -oE '[0-9]+' | head -1)
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION" || echo "latest")
-          if [ "$DRIVER_VERSION" = "latest" ]; then
-            DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
-          fi
-          wget -q "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          chromedriver --version
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Setup Chromedriver
+        uses: nanasess/setup-chromedriver@v2
+
+      - name: Run ATDD tests
+        run: pytest tests/atdd/ --maxfail=1 --disable-warnings -q
 
 
       - name: 5. Ejecutar la Aplicación Flask (en background)
