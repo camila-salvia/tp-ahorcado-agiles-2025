@@ -1,5 +1,9 @@
 import random
 from palabras import palabras_posibles
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+app.secret_key = 'ahorcado_juego_clave'
 
 """
     entrada_valida()
