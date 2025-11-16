@@ -57,8 +57,6 @@ jobs:
     # 'needs:' es la clave. Este job NO COMENZARÁ
     # si el job 'test-and-analyze' falla.
     needs: test-and-analyze
-    env:
-    TEST_MODE: 'true'
 
     steps:
       - name: 1. Checkout del código

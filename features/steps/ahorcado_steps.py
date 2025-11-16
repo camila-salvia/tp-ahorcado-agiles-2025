@@ -1,3 +1,4 @@
+import time
 from behave import given, when, then
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -30,8 +31,7 @@ def step_input_letters(context, letras):
             input_box.send_keys(letra)
             button.click()
 
-            import time
-            time.sleep(0.1) 
+            time.sleep(0.) 
 
     except Exception as e:
         print(f"Error al buscar elementos 'letra' o 'btn-probar': {e}")
