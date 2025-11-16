@@ -15,7 +15,7 @@ import os
 @given('abro el juego del ahorcado')
 def step_open_game(context):
     path = os.path.abspath("ui/ahorcado_ui.html")
-    context.driver = webdriver.Chrome()
+    context.driver = webdriver.Chrome(options=options)
     context.driver.get("file://" + path)
 
 @when('ingreso las letras {letras}')
