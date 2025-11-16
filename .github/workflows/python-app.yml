@@ -72,19 +72,22 @@ jobs:
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
 
-      - name: 4. Set up Chrome and ChromeDriver
-        uses: stefanzweifel/setup-chrome@v2
-        with:
-          chrome-version: stable
+      - name: 4. Set up Chrome 
+        uses: browser-actions/setup-chrome@v1
 
-      - name: 5. Ejecutar la Aplicación Flask (en background)
+      - name: 5. Set up ChromeDriver
+        uses: nanasess/setup-chromedriver@v2
+
+      - name: 6. Ejecutar la Aplicación Flask (en background)
         env:
           FLASK_APP: app.py
         run: |
           flask run &
           sleep 5 # Dar tiempo a que el servidor inicie
 
-      - name: 6. Ejecutar ATDD (Behave + Selenium)
+      - name: 7. Ejecutar ATDD (Behave + Selenium)
+        env: 
+          SELENIUM_HEADLESS: "1"
         run: |
           # 'behave' buscará tus archivos .feature y correrá los tests
           behave features/
