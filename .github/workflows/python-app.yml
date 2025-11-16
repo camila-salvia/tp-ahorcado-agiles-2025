@@ -73,18 +73,9 @@ jobs:
           pip install -r requirements.txt
 
       - name: 4. Set up Chrome and ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          CHROME_VERSION=$(google-chrome --version | grep -oE '[0-9]+' | head -1)
-          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION" || echo "latest")
-          if [ "$DRIVER_VERSION" = "latest" ]; then
-            DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
-          fi
-          wget -q "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          chromedriver --version
+        uses: stefanzweifel/setup-chrome@v2
+        with:
+          chrome-version: stable
 
       - name: 5. Ejecutar la Aplicación Flask (en background)
         env:
