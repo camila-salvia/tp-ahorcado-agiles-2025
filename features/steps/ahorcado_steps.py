@@ -2,6 +2,8 @@ from behave import given, when, then
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 options = Options()
 options.add_argument("--headless")
@@ -31,6 +33,12 @@ def step_input_letters(context, letras):
 
 @then('veo el mensaje "{mensaje}"')
 def step_see_message(context, mensaje):
-    result = context.driver.find_element(By.ID, "mensaje").text
-    assert mensaje in result
-    context.driver.quit()
+    try:
+        WebDriverWait(context.driver, 5).until(
+            EC.text_to_be_present_in_element((By.ID, "mensaje"), mensaje)
+        )
+        assert True
+    except:
+        texto_actual = context.driver.find_element(By.ID, "mensaje").text
+        print(f"Error: Se esperaba '{mensaje}' pero se encontró '{texto_actual}'") 
+        assert False
