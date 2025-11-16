@@ -45,7 +45,9 @@ def restar_vida(vidas: int)-> int:
         Devuelve False si la palabra no ha sido adivinada: sigue jugando.
 """
 def adivinar_palabra(usadas: list, palabra_secreta: str) -> bool:
-    return set(palabra_secreta).issubset(usadas) 
+    letras_palabra = set(palabra_secreta.lower())
+    letras_usadas = {letra.lower() for letra in usadas}
+    return letras_palabra.issubset(letras_usadas)
 
 """
     arriesgar()
