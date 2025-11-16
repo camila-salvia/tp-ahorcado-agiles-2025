@@ -98,9 +98,9 @@ def generar_palabra_mostrada(palabra_secreta: str, usadas: list) -> str:
 """
 def obtener_mensaje_final(usadas: list, palabra_secreta: str) -> str:
     if adivinar_palabra(usadas, palabra_secreta):
-        return f"\n¡Felicitaciones! Adivinaste la palabra y ganaste el juego."
+        return f"\nGanaste!"
     else:
-        return f"\n¡Perdiste! La palabra secreta era '{palabra_secreta}'."
+        return f"\nPerdiste! La palabra secreta era '{palabra_secreta}'."
 
 """
     gestionar_entrada()
