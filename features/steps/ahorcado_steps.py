@@ -1,6 +1,7 @@
 from behave import given, when, then
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webriver.common.by import By
 
 options = Options()
 options.add_argument("--headless")
