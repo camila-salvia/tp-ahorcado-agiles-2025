@@ -16,16 +16,26 @@ def step_open_game(context):
     context.driver = webdriver.Chrome(options=options)
     context.driver.get("http://127.0.0.1:5000/")
 
-@when('ingreso las letras {letras}')
+@when('ingreso las letras "{letras}"')
 def step_input_letters(context, letras):
-    letras = [l.strip().replace('"', '').replace(',', '') for l in letras.split()]
-    for letra in letras:
-        input_box = context.driver.find_element(By.ID, "letra")
-        button = context.driver.find_element(By.ID, "btn-probar")
-        input_box.clear()
-        input_box.send_keys(letra)
-        button.click()
-        time.sleep(0.3)
+    try:
+        wait = WebDriverWait(context.driver, 5)
+
+        input_box = wait.until(EC.presence_of_element_located((By.ID, "letra")))
+        button = wait.until(EC.presence_of_element_located((By.ID, "btn-probar")))
+
+        letras_limpias = letras.strip().replace(" ", "").replace(",", "")
+        for letra in letras_limpias:
+            input_box.clear()
+            input_box.send_keys(letra)
+            button.click()
+
+            import time
+            time.sleep(0.1) 
+
+    except Exception as e:
+        print(f"Error al buscar elementos 'letra' o 'btn-probar': {e}")
+        raise e
 
 @then('veo el mensaje "{mensaje}"')
 def step_see_message(context, mensaje):
