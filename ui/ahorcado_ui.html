@@ -98,7 +98,7 @@
         setMensaje(resp.final_message || resp.mensaje || "", resp.juego_terminado && resp.vidas > 0 ? "win" : "lose");
         bloquearInputs(true);
         // esperar y arrancar nueva partida con palabra distinta
-        setTimeout(() => iniciarNuevaPartida(true), 1500);
+        // setTimeout(() => iniciarNuevaPartida(true), 1500);
         return true;
       }
       return false;
