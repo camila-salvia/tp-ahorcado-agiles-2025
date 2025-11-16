@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, send_from_directory, request
+from flask_cors import CORS
 import random
 import os
 from palabras import palabras_posibles
 from ahorcado import gestionar_entrada, generar_palabra_mostrada, obtener_mensaje_final
 
 app = Flask(__name__, static_folder="ui", static_url_path="")
+CORS(app)
 
 @app.route("/palabra")
 def palabra():

@@ -18,7 +18,7 @@ import os
 def step_open_game(context):
     path = os.path.abspath("ui/ahorcado_ui.html")
     context.driver = webdriver.Chrome(options=options)
-    context.driver.get("file://" + path)
+    context.driver.get("htpp://127.0.0.1:5000/")
 
 @when('ingreso las letras {letras}')
 def step_input_letters(context, letras):

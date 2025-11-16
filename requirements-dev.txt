@@ -11,3 +11,5 @@ selenium      # Para controlar el navegador en los ATDD
 # 4. Calidad y Cobertura
 pytest-cov    # Para medir el Code Coverage de los Unit Tests
 flake8        # Para Análisis Estático (linting)
+
+Flask-CORS  # Para manejar CORS en la aplicación Flask durante pruebas
