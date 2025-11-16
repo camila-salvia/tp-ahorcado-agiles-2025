@@ -86,8 +86,6 @@ jobs:
           sleep 5 # Dar tiempo a que el servidor inicie
 
       - name: 7. Ejecutar ATDD (Behave + Selenium)
-        env: 
-          SELENIUM_HEADLESS: "1"
         run: |
           # 'behave' buscará tus archivos .feature y correrá los tests
           behave features/
