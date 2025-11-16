@@ -5,12 +5,18 @@ import os
 from palabras import palabras_posibles
 from ahorcado import gestionar_entrada, generar_palabra_mostrada, obtener_mensaje_final
 
+TEST_MODE = os.environ.get("TEST_MODE", "false").lower() == "true"
+PALABRA_FIJA_TEST = "pera"
+
 app = Flask(__name__, static_folder="ui", static_url_path="")
 CORS(app)
 
 @app.route("/palabra")
 def palabra():
+    if TEST_MODE:
+        return jsonify({"palabra": PALABRA_FIJA_TEST})
     return jsonify({"palabra": random.choice(palabras_posibles)})
+
 
 @app.route("/gestionar", methods=["POST"])
 def gestionar():

@@ -2,9 +2,9 @@ name: Pipeline Completo de CI/CD del Ahorcado
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
-    branches: [ "main" ]
+    branches: ['main']
 
 permissions:
   pull-requests: write
@@ -24,7 +24,7 @@ jobs:
       - name: 2. Configurar Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: 3. Instalar dependencias
         run: |
@@ -41,7 +41,7 @@ jobs:
       - name: 5. Ejecutar Unit Tests y Cobertura
         run: |
           pytest --cov=. --cov-report=xml --cov-report=term-missing
-          
+
       - name: 6. Ejecutar Análisis SonarCloud
         uses: SonarSource/sonarcloud-github-action@v2
         env:
@@ -49,14 +49,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.TOKEN_REPO_AGILES }}
 
   # ----------------------------------------------------
-  # JOB 2: Pruebas de Aceptación (ATDD) 
+  # JOB 2: Pruebas de Aceptación (ATDD)
   acceptance-test:
     name: 2. Pruebas de Aceptación (ATDD)
     runs-on: ubuntu-latest
-    
+
     # 'needs:' es la clave. Este job NO COMENZARÁ
     # si el job 'test-and-analyze' falla.
-    needs: test-and-analyze 
+    needs: test-and-analyze
 
     steps:
       - name: 1. Checkout del código
@@ -65,14 +65,14 @@ jobs:
       - name: 2. Configurar Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: 3. Instalar todas las dependencias
         run: |
           pip install -r requirements-dev.txt
           pip install -r requirements.txt
 
-      - name: 4. Set up Chrome 
+      - name: 4. Set up Chrome
         uses: browser-actions/setup-chrome@v1
 
       - name: 5. Set up ChromeDriver
@@ -80,9 +80,10 @@ jobs:
 
       - name: 6. Ejecutar la Aplicación Flask (en background)
         env:
-          FLASK_APP: app.py
+          FLASK_APP: server.py
+          TEST_MODE: 'true' # <--- ACTIVAR LA PALABRA FIJA
         run: |
-          flask run &
+          flask run --host=0.0.0.0 --port=5000 &
           sleep 5 # Dar tiempo a que el servidor inicie
 
       - name: 7. Ejecutar ATDD (Behave + Selenium)
@@ -93,14 +94,14 @@ jobs:
           # y el pipeline se detendrá aquí.
 
   # ----------------------------------------------------
-  # JOB 3: Desplegar a Producción 
+  # JOB 3: Desplegar a Producción
   # ----------------------------------------------------
   deploy:
     name: 3. Desplegar a Producción
     runs-on: ubuntu-latest
-    
+
     # Este job SOLO se ejecuta si 'acceptance-test' fue exitoso
-    needs: acceptance-test 
+    needs: acceptance-test
     # Y solo se ejecuta en la rama 'main' (no en Pull Requests)
     if: github.ref == 'refs/heads/main'
 

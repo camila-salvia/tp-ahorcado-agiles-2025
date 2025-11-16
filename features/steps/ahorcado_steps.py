@@ -4,21 +4,17 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 
-driver = webdriver.Chrome(options=options)
-import time
-import os
-
 @given('abro el juego del ahorcado')
 def step_open_game(context):
-    path = os.path.abspath("ui/ahorcado_ui.html")
     context.driver = webdriver.Chrome(options=options)
-    context.driver.get("htpp://127.0.0.1:5000/")
+    context.driver.get("http://127.0.0.1:5000/")
 
 @when('ingreso las letras {letras}')
 def step_input_letters(context, letras):
@@ -29,7 +25,7 @@ def step_input_letters(context, letras):
         input_box.clear()
         input_box.send_keys(letra)
         button.click()
-        time.sleep(0.3)  # breve espera para actualizar DOM
+        time.sleep(0.3)
 
 @then('veo el mensaje "{mensaje}"')
 def step_see_message(context, mensaje):
@@ -40,5 +36,7 @@ def step_see_message(context, mensaje):
         assert True
     except:
         texto_actual = context.driver.find_element(By.ID, "mensaje").text
-        print(f"Error: Se esperaba '{mensaje}' pero se encontró '{texto_actual}'") 
+        print(f"Error: se esperaba '{mensaje}' pero se encontró '{texto_actual}'")
         assert False
+    finally:
+        context.driver.quit()
