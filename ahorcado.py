@@ -1,4 +1,4 @@
-import random 
+import random
 from palabras import palabras_posibles
 from flask import Flask, request, jsonify
 
