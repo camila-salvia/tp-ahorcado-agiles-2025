@@ -40,7 +40,8 @@ jobs:
 
       - name: 5. Ejecutar Unit Tests y Cobertura
         run: |
-          pytest --cov=. --cov-report=xml --cov-report=term-missing
+          # Medir cobertura solamente del archivo ahorcado.py
+          pytest --cov=ahorcado.py --cov-report=xml --cov-report=term-missing
 
       - name: 6. Ejecutar Análisis SonarCloud
         uses: SonarSource/sonarcloud-github-action@v2
