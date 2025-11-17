@@ -45,6 +45,8 @@
     </div>
 
     <p id="mensaje"></p>
+
+    <button id="nueva-partida" style="display: none;">Juegar de Nuevo</button>
   </div>
 
   <script>
@@ -97,8 +99,9 @@
         // mostrar mensaje final que viene del servidor
         setMensaje(resp.final_message || resp.mensaje || "", resp.juego_terminado && resp.vidas > 0 ? "win" : "lose");
         bloquearInputs(true);
-        // esperar y arrancar nueva partida con palabra distinta
-        // setTimeout(() => iniciarNuevaPartida(true), 1500);
+
+        document.getElementById("nueva-partida").style.display = "block";
+
         return true;
       }
       return false;
@@ -149,7 +152,12 @@
         setMensaje("⚠️ Ingresa una palabra para arriesgar.", "");
         return;
       }
-
+    
+      document.getElementById("nueva-partida").addEventListener("click", () => {
+        iniciarNuevaPartida(true);
+        document.getElementById("nueva-partida").style.display = "none";
+      });
+      
       pedirGestion({
         entrada: "arriesgar",
         intento_arriesgar: intento,

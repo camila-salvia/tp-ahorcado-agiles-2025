@@ -78,6 +78,19 @@
       transform: scale(1.05);
     }
 
+    #nueva-partida{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
     /* ====== MENSAJE FINAL ====== */
     #mensaje {
       margin-top: 1.5rem;
