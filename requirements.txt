@@ -1,2 +1,3 @@
 Flask #framework web para correr la app
 gunicorn #servidor WSGI para correr la app en producción
+Flask-CORS  # Para manejar CORS en la aplicación Flask durante pruebas
