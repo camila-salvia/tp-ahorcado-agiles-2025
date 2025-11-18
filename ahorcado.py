@@ -1,8 +1,11 @@
 import random
 from palabras import palabras_posibles
 from flask import Flask, request, jsonify
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
+csrf = CSRFProtect()
+csrf.init_app(app)
 app.secret_key = 'ahorcado_juego_clave'
 
 """
