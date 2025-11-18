@@ -1,10 +1,10 @@
 import random
 from palabras import palabras_posibles
 from flask import Flask, request, jsonify
+import os
 
 app = Flask(__name__)
-app.secret_key = 'ahorcado_juego_clave'
-
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'clave_por_defecto')
 """
     entrada_valida()
         Descripción: Verifica si la entrada es válida o no.
