@@ -1,4 +1,5 @@
 import random
+import os
 from palabras import palabras_posibles
 from flask import Flask, request, jsonify
 from flask_wtf.csrf import CSRFProtect
@@ -6,8 +7,8 @@ from flask_wtf.csrf import CSRFProtect
 app = Flask(__name__)
 csrf = CSRFProtect()
 csrf.init_app(app)
-app.secret_key = 'ahorcado_juego_clave'
 
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'clave_por_defecto')
 """
     entrada_valida()
         Descripción: Verifica si la entrada es válida o no.

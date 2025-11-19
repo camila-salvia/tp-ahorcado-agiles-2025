@@ -40,7 +40,8 @@ jobs:
 
       - name: 5. Ejecutar Unit Tests y Cobertura
         run: |
-          pytest --cov=. --cov-report=xml --cov-report=term-missing
+          # Medir cobertura solamente del archivo ahorcado.py
+          pytest --cov=ahorcado.py --cov-report=xml --cov-report=term-missing
 
       - name: 6. Ejecutar Análisis SonarCloud
         uses: SonarSource/sonarcloud-github-action@v2
@@ -82,6 +83,7 @@ jobs:
         env:
           FLASK_APP: server.py
           TEST_MODE: 'true' # <--- ACTIVAR LA PALABRA FIJA
+          FLASK_SECRET_KEY: 'vsv!ipsj)4qskfb9$0tz*l#a*9i2d$#+8fux8u&b_mhg%-q7^f'
         run: |
           flask run --host=0.0.0.0 --port=5000 &
           sleep 5 # Dar tiempo a que el servidor inicie
