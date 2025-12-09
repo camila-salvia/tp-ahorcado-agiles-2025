@@ -3,8 +3,10 @@ import os
 from palabras import palabras_posibles
 from flask import Flask, request, jsonify
 from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*", "send_wildcard": "False"}})
 csrf = CSRFProtect()
 csrf.init_app(app)
 
