@@ -202,21 +202,21 @@ def test_gestionar_letra_repetida():
 
 # test 31: entrada inválida
 def test_gestionar_letra_invalida():
-    vidas, usadas, msg, fin = gestionar_entrada("?#", None, palabra_secreta, vidas_iniciales, usadas_iniciales)
+    vidas, _, msg, fin = gestionar_entrada("?#", None, palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 6
     assert "inválida" in msg
     assert fin is False
 
 # test 32: arriesga y gana
 def test_gestionar_arriesgar_gana():
-    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "pera", palabra_secreta, vidas_iniciales, usadas_iniciales)
+    vidas, usadas, _, fin = gestionar_entrada("arriesgar", "pera", palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 6
     assert set(palabra_secreta).issubset(usadas) # Verifica que se hayan agregado todas las letras
     assert fin is True
 
 # test 33: arriesga y pierde
 def test_gestionar_arriesgar_pierde():
-    vidas, usadas, msg, fin = gestionar_entrada("arriesgar", "gato", palabra_secreta, vidas_iniciales, usadas_iniciales)
+    vidas, _, msg, fin = gestionar_entrada("arriesgar", "gato", palabra_secreta, vidas_iniciales, usadas_iniciales)
     assert vidas == 0 # Pierde todas las vidas
     assert "¡Incorrecto!" in msg
     assert fin is True
