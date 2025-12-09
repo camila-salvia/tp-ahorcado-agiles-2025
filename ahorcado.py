@@ -144,9 +144,7 @@ def gestionar_entrada(entrada: str, intento_arriesgar: str, palabra_secreta: str
         mensaje = "Entrada inválida. Por favor, ingrese una sola letra o la palabra ARRIESGAR."
     
     # Comprobar si ganó después del turno
-    if adivinar_palabra(usadas, palabra_secreta):
-            juego_terminado = True
-    elif vidas == 0:  # se quedó sin vidas
+    if adivinar_palabra(usadas, palabra_secreta) or vidas == 0:
         juego_terminado = True
     return (vidas, usadas, mensaje, juego_terminado)
 
