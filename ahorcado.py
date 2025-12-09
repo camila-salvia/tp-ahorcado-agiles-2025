@@ -62,7 +62,7 @@ def adivinar_palabra(usadas: list, palabra_secreta: str) -> bool:
         Devuelve False si la palabra arriesgada es incorrecta: pierde el juego.
 """
 def arriesgar(palabra: str, palabra_secreta: str) -> bool:
-    if not palabra.lower() == palabra_secreta:
+    if  palabra.lower() != palabra_secreta:
         return False
     return True
 

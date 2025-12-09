@@ -163,12 +163,12 @@ def test_mostrar_palabra_completa():
 # test 26: mostrar mensaje de victoria
 def test_mensaje_final_victoria():
     usadas = {"p", "e", "r", "a"}
-    assert "Ganaste!" in obtener_mensaje_final(usadas, "pera")
+    assert "Ganaste!" in obtener_mensaje_final(list(usadas), "pera")
 
 # test 27: mostrar mensaje de derrota
 def test_mensaje_final_derrota():
     usadas = {"p", "e"}
-    assert "Perdiste!" in obtener_mensaje_final(usadas, "pera")
+    assert "Perdiste!" in obtener_mensaje_final(list(usadas), "pera")
 
 
 # -------------------------------
